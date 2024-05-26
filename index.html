@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Telestats calculator</title>
+        <style>
+            *{
+                font-family: monospace;
+                background-color: rgb(45, 42, 42);
+                color: white;
+            }
+            input {
+                border: 2px solid red;
+                border-radius: 4px;
+                width: 300px;
+            }
+            .box {
+                border: 2px solid white;
+                padding: 10px;
+            }
+        </style>
+        <script>
+            function copy(textarea) {
+                let textArea = document.getElementById(textarea);
+
+                textArea.focus()
+                textArea.select()
+
+                document.execCommand('copy')
+            }
+
+            function calculate_stats() {
+                // DATE
+                const mth = ["", 'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+                let DATE = document.getElementById("DATE").value.split("-");
+                let DAY = DATE[2];
+                let MONTH = mth[Number(DATE[1])];
+                let YEAR = DATE[0].slice(2);
+
+
+
+                // YESTERDAY ACCUMULATIVE
+                let ystd = document.getElementById("YTD").value;
+                let my_array = ystd.split("\n");
+
+                let YESTERDAY_LOCAL_ACCUMULATIVE_T_SORTIES = Number(my_array[0].split(",")[0]);
+                let YESTERDAY_LOCAL_ACCUMULATIVE_T_HOURS   = parseFloat(my_array[0].split(",")[1]);
+                let YESTERDAY_LOCAL_ACCUMULATIVE_P_SORTIES = Number(my_array[1].split(",")[0]);
+                let YESTERDAY_LOCAL_ACCUMULATIVE_P_HOURS   = parseFloat(my_array[1].split(",")[1]);
+                let YESTERDAY_LOCAL_ACCUMULATIVE_A_SORTIES = Number(my_array[2].split(",")[0]);
+                let YESTERDAY_LOCAL_ACCUMULATIVE_A_HOURS   = parseFloat(my_array[2].split(",")[1]);
+
+                let YESTERDAY_OVERSEAS_ACCUMULATIVE_T_SORTIES = Number(my_array[3].split(",")[0]);
+                let YESTERDAY_OVERSEAS_ACCUMULATIVE_T_HOURS   = parseFloat(my_array[3].split(",")[1]);
+                let YESTERDAY_OVERSEAS_ACCUMULATIVE_P_SORTIES = Number(my_array[4].split(",")[0]);
+                let YESTERDAY_OVERSEAS_ACCUMULATIVE_P_HOURS   = parseFloat(my_array[4].split(",")[1]);
+                let YESTERDAY_OVERSEAS_ACCUMULATIVE_A_SORTIES = Number(my_array[5].split(",")[0]);
+                let YESTERDAY_OVERSEAS_ACCUMULATIVE_A_HOURS   = parseFloat(my_array[5].split(",")[1]);
+
+                let YESTERDAY_ACCUMULATIVE_CXM1  = Number(my_array[6].split(",")[0]);
+                let YESTERDAY_ACCUMULATIVE_CXM2  = Number(my_array[6].split(",")[1]);
+                let YESTERDAY_ACCUMULATIVE_CXM3  = Number(my_array[6].split(",")[2]);
+                let YESTERDAY_ACCUMULATIVE_CXM4  = Number(my_array[6].split(",")[3]);
+                let YESTERDAY_ACCUMULATIVE_CXOPS = Number(my_array[6].split(",")[4]);
+                let YESTERDAY_ACCUMULATIVE_CXOTH = Number(my_array[6].split(",")[5]);
+
+                let WORKYEAR_ACCUMULATIVE_SORTIES = Number(my_array[7].split(",")[0]);
+                let WORKYEAR_ACCUMULATIVE_HOURS   = Number(my_array[7].split(",")[1])
+
+                // MOP 
+                let MOP_T_LOCAL_SORTIES = Number(document.getElementById("MOP_T_LOCAL_SORTIES").value);
+                let MOP_T_LOCAL_HOURS = parseFloat(document.getElementById("MOP_T_LOCAL_HOURS").value) ;
+                let MOP_P_LOCAL_SORTIES = Number(document.getElementById("MOP_P_LOCAL_SORTIES").value);
+                let MOP_P_LOCAL_HOURS = parseFloat(document.getElementById("MOP_P_LOCAL_HOURS").value) ;
+
+                let MOP_T_OVERSEAS_SORTIES = Number(document.getElementById("MOP_T_OVERSEAS_SORTIES").value);
+                let MOP_T_OVERSEAS_HOURS = parseFloat(document.getElementById("MOP_T_OVERSEAS_HOURS").value) ;
+                let MOP_P_OVERSEAS_SORTIES = Number(document.getElementById("MOP_P_OVERSEAS_SORTIES").value);
+                let MOP_P_OVERSEAS_HOURS = parseFloat(document.getElementById("MOP_P_OVERSEAS_HOURS").value) ;
+
+                let MOP_T_TOTAL_SORTIES = MOP_T_LOCAL_SORTIES + MOP_T_OVERSEAS_SORTIES;
+                let MOP_T_TOTAL_HOURS = MOP_T_LOCAL_HOURS + MOP_T_OVERSEAS_HOURS;
+                let MOP_P_TOTAL_SORTIES = MOP_P_LOCAL_SORTIES + MOP_P_OVERSEAS_SORTIES;
+                let MOP_P_TOTAL_HOURS = MOP_P_LOCAL_HOURS + MOP_P_OVERSEAS_HOURS;
+
+                let MOP_PERCENTAGE = parseFloat(document.getElementById("MOP_PERCENTAGE").value);
+                
+                // DAILY
+                let DAILY_T_LOCAL_SORTIES = Number(document.getElementById("DAILY_T_LOCAL_SORTIES").value);
+                let DAILY_T_LOCAL_HOURS = parseFloat(document.getElementById("DAILY_T_LOCAL_HOURS").value);
+                let DAILY_P_LOCAL_SORTIES = Number(document.getElementById("DAILY_P_LOCAL_SORTIES").value);
+                let DAILY_P_LOCAL_HOURS = parseFloat(document.getElementById("DAILY_P_LOCAL_HOURS").value);
+                let DAILY_A_LOCAL_SORTIES = Number(document.getElementById("DAILY_A_LOCAL_SORTIES").value);
+                let DAILY_A_LOCAL_HOURS = parseFloat(document.getElementById("DAILY_A_LOCAL_HOURS").value);
+                let DAILY_NEG_LOCAL_SORTIES = DAILY_A_LOCAL_SORTIES - DAILY_T_LOCAL_SORTIES;
+                let DAILY_NEG_LOCAL_HOURS = DAILY_A_LOCAL_HOURS - DAILY_T_LOCAL_HOURS;
+            
+                let DAILY_T_OVERSEAS_SORTIES = Number(document.getElementById("DAILY_T_OVERSEAS_SORTIES").value);
+                let DAILY_T_OVERSEAS_HOURS = parseFloat(document.getElementById("DAILY_T_OVERSEAS_HOURS").value);
+                let DAILY_P_OVERSEAS_SORTIES = Number(document.getElementById("DAILY_P_OVERSEAS_SORTIES").value);
+                let DAILY_P_OVERSEAS_HOURS = parseFloat(document.getElementById("DAILY_P_OVERSEAS_HOURS").value);
+                let DAILY_A_OVERSEAS_SORTIES = Number(document.getElementById("DAILY_A_OVERSEAS_SORTIES").value);
+                let DAILY_A_OVERSEAS_HOURS = parseFloat(document.getElementById("DAILY_A_OVERSEAS_HOURS").value);
+                let DAILY_NEG_OVERSEAS_SORTIES = DAILY_A_OVERSEAS_SORTIES - DAILY_T_OVERSEAS_SORTIES;
+                let DAILY_NEG_OVERSEAS_HOURS = DAILY_A_OVERSEAS_HOURS - DAILY_T_OVERSEAS_HOURS;
+
+                //MONTHLY
+                let DAILY_LOCAL_T_TOTAL_SORTIES   = DAILY_T_LOCAL_SORTIES   + YESTERDAY_LOCAL_ACCUMULATIVE_T_SORTIES; 
+                let DAILY_LOCAL_T_TOTAL_HOURS     = DAILY_T_LOCAL_HOURS     + YESTERDAY_LOCAL_ACCUMULATIVE_T_HOURS; 
+                let DAILY_LOCAL_P_TOTAL_SORTIES   = DAILY_P_LOCAL_SORTIES   + YESTERDAY_LOCAL_ACCUMULATIVE_P_SORTIES;
+                let DAILY_LOCAL_P_TOTAL_HOURS     = DAILY_P_LOCAL_HOURS     + YESTERDAY_LOCAL_ACCUMULATIVE_P_HOURS; 
+                let DAILY_LOCAL_A_TOTAL_SORTIES   = DAILY_A_LOCAL_SORTIES   + YESTERDAY_LOCAL_ACCUMULATIVE_A_SORTIES;
+                let DAILY_LOCAL_A_TOTAL_HOURS     = DAILY_A_LOCAL_HOURS     + YESTERDAY_LOCAL_ACCUMULATIVE_A_HOURS; 
+                let DAILY_LOCAL_NEG_TOTAL_SORTIES = DAILY_LOCAL_A_TOTAL_SORTIES - DAILY_LOCAL_T_TOTAL_SORTIES;
+                let DAILY_LOCAL_NEG_TOTAL_HOURS   = DAILY_LOCAL_A_TOTAL_HOURS - DAILY_LOCAL_T_TOTAL_HOURS;
+
+                let DAILY_OVERSEAS_T_TOTAL_SORTIES   = DAILY_T_OVERSEAS_SORTIES   + YESTERDAY_OVERSEAS_ACCUMULATIVE_T_SORTIES; 
+                let DAILY_OVERSEAS_T_TOTAL_HOURS     = DAILY_T_OVERSEAS_HOURS     + YESTERDAY_OVERSEAS_ACCUMULATIVE_T_HOURS; 
+                let DAILY_OVERSEAS_P_TOTAL_SORTIES   = DAILY_P_OVERSEAS_SORTIES   + YESTERDAY_OVERSEAS_ACCUMULATIVE_P_SORTIES;
+                let DAILY_OVERSEAS_P_TOTAL_HOURS     = DAILY_P_OVERSEAS_HOURS     + YESTERDAY_OVERSEAS_ACCUMULATIVE_P_HOURS; 
+                let DAILY_OVERSEAS_A_TOTAL_SORTIES   = DAILY_A_OVERSEAS_SORTIES   + YESTERDAY_OVERSEAS_ACCUMULATIVE_A_SORTIES;
+                let DAILY_OVERSEAS_A_TOTAL_HOURS     = DAILY_A_OVERSEAS_HOURS     + YESTERDAY_OVERSEAS_ACCUMULATIVE_A_HOURS; 
+                let DAILY_OVERSEAS_NEG_TOTAL_SORTIES = DAILY_OVERSEAS_A_TOTAL_SORTIES - DAILY_OVERSEAS_T_TOTAL_SORTIES;
+                let DAILY_OVERSEAS_NEG_TOTAL_HOURS   = DAILY_OVERSEAS_A_TOTAL_HOURS - DAILY_OVERSEAS_T_TOTAL_HOURS;
+
+                let DAILY_T_TOTAL_SORTIES   = DAILY_LOCAL_T_TOTAL_SORTIES    + DAILY_OVERSEAS_T_TOTAL_SORTIES   ;
+                let DAILY_T_TOTAL_HOURS     = DAILY_LOCAL_T_TOTAL_HOURS      + DAILY_OVERSEAS_T_TOTAL_HOURS     ;
+                let DAILY_P_TOTAL_SORTIES   = DAILY_LOCAL_P_TOTAL_SORTIES    + DAILY_OVERSEAS_P_TOTAL_SORTIES   ;
+                let DAILY_P_TOTAL_HOURS     = DAILY_LOCAL_P_TOTAL_HOURS      + DAILY_OVERSEAS_P_TOTAL_HOURS     ;
+                let DAILY_A_TOTAL_SORTIES   = DAILY_LOCAL_A_TOTAL_SORTIES    + DAILY_OVERSEAS_A_TOTAL_SORTIES   ;
+                let DAILY_A_TOTAL_HOURS     = DAILY_LOCAL_A_TOTAL_HOURS      + DAILY_OVERSEAS_A_TOTAL_HOURS     ;
+                let DAILY_NEG_TOTAL_SORTIES = DAILY_LOCAL_NEG_TOTAL_SORTIES  + DAILY_OVERSEAS_NEG_TOTAL_SORTIES ;
+                let DAILY_NEG_TOTAL_HOURS   = DAILY_LOCAL_NEG_TOTAL_HOURS    + DAILY_OVERSEAS_NEG_TOTAL_HOURS   ;
+
+                // CXMX FOR LOCAL AND OVERSEAS
+                let LOCAL_CXM1 = Number(document.getElementById("LOCAL_CXM1").value);
+                let LOCAL_CXM2 = Number(document.getElementById("LOCAL_CXM2").value);
+                let LOCAL_CXM3 = Number(document.getElementById("LOCAL_CXM3").value);
+                let LOCAL_CXM4 = Number(document.getElementById("LOCAL_CXM4").value);
+                let LOCAL_CXOPS = Number(document.getElementById("LOCAL_CXOPS").value);
+                let LOCAL_CXOTH = Number(document.getElementById("LOCAL_CXOTH").value);
+                let LOCAL_CXMX = LOCAL_CXM1 + LOCAL_CXM2 + LOCAL_CXM3 + LOCAL_CXM4 + LOCAL_CXOPS + LOCAL_CXOTH;
+
+                let OVERSEAS_CXM1 = Number(document.getElementById("OVERSEAS_CXM1").value);
+                let OVERSEAS_CXM2 = Number(document.getElementById("OVERSEAS_CXM2").value);
+                let OVERSEAS_CXM3 = Number(document.getElementById("OVERSEAS_CXM3").value);
+                let OVERSEAS_CXM4 = Number(document.getElementById("OVERSEAS_CXM4").value);
+                let OVERSEAS_CXOPS = Number(document.getElementById("OVERSEAS_CXOPS").value);
+                let OVERSEAS_CXOTH = Number(document.getElementById("OVERSEAS_CXOTH").value);
+                let OVERSEAS_CXMX = OVERSEAS_CXM1 + OVERSEAS_CXM2 + OVERSEAS_CXM3 + OVERSEAS_CXM4 + OVERSEAS_CXOPS + OVERSEAS_CXOTH;
+
+                // CALCULATE TODAY ACCUMULATIVE
+                let TODAY_ACCUMULATIVE_CXM1 =  LOCAL_CXM1  + YESTERDAY_ACCUMULATIVE_CXM1  + OVERSEAS_CXM1 ;
+                let TODAY_ACCUMULATIVE_CXM2 =  LOCAL_CXM2  + YESTERDAY_ACCUMULATIVE_CXM2  + OVERSEAS_CXM2 ;
+                let TODAY_ACCUMULATIVE_CXM3 =  LOCAL_CXM3  + YESTERDAY_ACCUMULATIVE_CXM3  + OVERSEAS_CXM3 ;
+                let TODAY_ACCUMULATIVE_CXM4 =  LOCAL_CXM4  + YESTERDAY_ACCUMULATIVE_CXM4  + OVERSEAS_CXM4 ;
+                let TODAY_ACCUMULATIVE_CXOPS = LOCAL_CXOPS + YESTERDAY_ACCUMULATIVE_CXOPS + OVERSEAS_CXOPS;
+                let TODAY_ACCUMULATIVE_CXOTH = LOCAL_CXOTH + YESTERDAY_ACCUMULATIVE_CXOTH + OVERSEAS_CXOTH;
+
+                
+                // CALCULATE PERCENTAGE
+                let FORECASTED_ACHEIVED = (MOP_P_TOTAL_HOURS - DAILY_P_TOTAL_HOURS + DAILY_A_TOTAL_HOURS) * 100 / MOP_T_TOTAL_HOURS;
+                let CURRENT_ACHEIVED = DAILY_A_TOTAL_HOURS * 100 / MOP_T_TOTAL_HOURS;
+
+                // CALCULATE WORKYEAR
+                let wk1 = WORKYEAR_ACCUMULATIVE_SORTIES - DAILY_A_LOCAL_SORTIES - DAILY_A_OVERSEAS_SORTIES;
+                let wk2 = WORKYEAR_ACCUMULATIVE_HOURS - DAILY_A_LOCAL_HOURS - DAILY_A_OVERSEAS_HOURS;
+
+                // COMPILE THE MESSAGES
+                let msg1 = `Good day sirs, here are the stats for today. Thank you sirs                                                                                                                                        
+
+Month of ${MONTH} ${YEAR}             
+                
+Local              
+                
+<T> ${MOP_T_LOCAL_SORTIES} / ${MOP_T_LOCAL_HOURS.toFixed(1)}           
+<P> ${MOP_P_LOCAL_SORTIES} / ${MOP_P_LOCAL_HOURS.toFixed(1)}         
+                
+Overseas              
+                
+<T> ${MOP_T_OVERSEAS_SORTIES} / ${MOP_T_OVERSEAS_HOURS.toFixed(1)}            
+<P> ${MOP_P_OVERSEAS_SORTIES} / ${MOP_P_OVERSEAS_HOURS.toFixed(1)}                                                                            
+                                                                                                        
+Total                                                                                                                                            
+                                                                                                                                                
+<T> ${MOP_T_TOTAL_SORTIES} / ${MOP_T_TOTAL_HOURS.toFixed(1)}                                                                                                   
+<P> ${MOP_P_TOTAL_SORTIES} / ${MOP_P_TOTAL_HOURS.toFixed(1)}                                                       
+                                                                                                                
+${MOP_PERCENTAGE}%                                                                                           
+===                                                                                                                            
+                                                                                                                                            
+Daily - ${DAY} ${MONTH}                                                                                                                
+                                                                                                                                            
+LOCAL                                                                          
+                                                                            
+<T> ${DAILY_T_LOCAL_SORTIES} / ${DAILY_T_LOCAL_HOURS.toFixed(1)}                                            
+<P> ${DAILY_P_LOCAL_SORTIES} / ${DAILY_P_LOCAL_HOURS.toFixed(1)}                            
+<A> ${DAILY_A_LOCAL_SORTIES} / ${DAILY_A_LOCAL_HOURS.toFixed(1)}         
+                
+${DAILY_NEG_LOCAL_SORTIES} / ${DAILY_NEG_LOCAL_HOURS.toFixed(1)}
+
+${LOCAL_CXMX}CXMX
+
+    
+    
+            
+OVERSEAS              
+                
+<T> ${DAILY_T_OVERSEAS_SORTIES} / ${DAILY_T_OVERSEAS_HOURS.toFixed(1)}       
+<P> ${DAILY_P_OVERSEAS_SORTIES} / ${DAILY_P_OVERSEAS_HOURS.toFixed(1)}        
+<A> ${DAILY_A_OVERSEAS_SORTIES} / ${DAILY_A_OVERSEAS_HOURS.toFixed(1)}   
+                
+${DAILY_NEG_OVERSEAS_SORTIES} / ${DAILY_NEG_OVERSEAS_HOURS.toFixed(1)} 
+
+${OVERSEAS_CXMX}CXMX
+                                                                           
+Monthly - ${MONTH}                                               
+                                                                            
+LOCAL                                                                          
+            
+
+<T> ${DAILY_LOCAL_T_TOTAL_SORTIES} / ${DAILY_LOCAL_T_TOTAL_HOURS.toFixed(1)}                  
+<P> ${DAILY_LOCAL_P_TOTAL_SORTIES} / ${DAILY_LOCAL_P_TOTAL_HOURS.toFixed(1)}                             
+<A> ${DAILY_LOCAL_A_TOTAL_SORTIES} / ${DAILY_LOCAL_A_TOTAL_HOURS.toFixed(1)}                            
+                                                                            
+${DAILY_LOCAL_NEG_TOTAL_SORTIES } / ${DAILY_LOCAL_NEG_TOTAL_HOURS.toFixed(1)}
+                
+OVERSEAS              
+                
+<T> ${DAILY_OVERSEAS_T_TOTAL_SORTIES} / ${DAILY_OVERSEAS_T_TOTAL_HOURS.toFixed(1)}                  
+<P> ${DAILY_OVERSEAS_P_TOTAL_SORTIES} / ${DAILY_OVERSEAS_P_TOTAL_HOURS.toFixed(1)}                             
+<A> ${DAILY_OVERSEAS_A_TOTAL_SORTIES} / ${DAILY_OVERSEAS_A_TOTAL_HOURS.toFixed(1)}                            
+                                                                            
+${DAILY_OVERSEAS_NEG_TOTAL_SORTIES } / ${DAILY_OVERSEAS_NEG_TOTAL_HOURS.toFixed(1)}
+                
+TOTAL              
+                
+<T> ${DAILY_T_TOTAL_SORTIES} / ${DAILY_T_TOTAL_HOURS.toFixed(1)}                  
+<P> ${DAILY_P_TOTAL_SORTIES} / ${DAILY_P_TOTAL_HOURS.toFixed(1)}                             
+<A> ${DAILY_A_TOTAL_SORTIES} / ${DAILY_A_TOTAL_HOURS.toFixed(1)}   
+            
+${TODAY_ACCUMULATIVE_CXM1}CXM1     
+${TODAY_ACCUMULATIVE_CXM2}CXM2  
+${TODAY_ACCUMULATIVE_CXM3}CXM3    
+${TODAY_ACCUMULATIVE_CXM4}CXM4  
+${TODAY_ACCUMULATIVE_CXOPS}CXOPS     
+${TODAY_ACCUMULATIVE_CXOTH}CXOTH  
+    
+                    
+${DAILY_NEG_TOTAL_SORTIES} / ${DAILY_NEG_TOTAL_HOURS.toFixed(1)}
+                                                                                                
+Achieved % for the month:                                                                                                                                            
+                                                                                                                                                
+Forecasted Achieved: ${FORECASTED_ACHEIVED.toFixed(2)}%                                                                                                                                            
+Current Achieved:    ${CURRENT_ACHEIVED.toFixed(2)}%  
+    
+Workyear:      
+${wk1} / ${wk2.toFixed(1)} 
+                `;
+                let msg2 = `
+${DAILY_LOCAL_T_TOTAL_SORTIES},${DAILY_LOCAL_T_TOTAL_HOURS.toFixed(1)}                  
+${DAILY_LOCAL_P_TOTAL_SORTIES},${DAILY_LOCAL_P_TOTAL_HOURS.toFixed(1)}                             
+${DAILY_LOCAL_A_TOTAL_SORTIES},${DAILY_LOCAL_A_TOTAL_HOURS.toFixed(1)}                                    
+${DAILY_OVERSEAS_T_TOTAL_SORTIES},${DAILY_OVERSEAS_T_TOTAL_HOURS.toFixed(1)}                  
+${DAILY_OVERSEAS_P_TOTAL_SORTIES},${DAILY_OVERSEAS_P_TOTAL_HOURS.toFixed(1)}                             
+${DAILY_OVERSEAS_A_TOTAL_SORTIES},${DAILY_OVERSEAS_A_TOTAL_HOURS.toFixed(1)}
+${TODAY_ACCUMULATIVE_CXM1},${TODAY_ACCUMULATIVE_CXM2},${TODAY_ACCUMULATIVE_CXM3},${TODAY_ACCUMULATIVE_CXM4},${TODAY_ACCUMULATIVE_CXOPS},${TODAY_ACCUMULATIVE_CXOTH}
+${wk1},${wk2}`;
+                document.getElementById("message").value = msg1;
+                document.getElementById("stats").value = msg2;
+            }
+        </script>
+    </head>
+    <body>
+
+        <h3 class="upp">Date: <input id="DATE" type="date"></h3> 
+
+        <h2 class="upp">YESTERDAY ACCUMULATIVE: </h2>
+        <div class="box">
+            <textarea name="" id="YTD"></textarea>
+        </div>
+
+        <h2 class="upp">MOP: </h2>
+        <div class="box">
+
+            <h4>Local: </h4>
+            <input placeholder="MOP T local sorties" id="MOP_T_LOCAL_SORTIES"type="text">
+            <input placeholder="MOP T local hours" id="MOP_T_LOCAL_HOURS"type="text">
+            <br><br>
+            <input placeholder="MOP P local sorties" id="MOP_P_LOCAL_SORTIES"type="text">
+            <input placeholder="MOP P local hours" id="MOP_P_LOCAL_HOURS"type="text">
+            <br><br>
+
+            <h4>Overseas: </h4>
+            <input placeholder="MOP T overseas sorties" id="MOP_T_OVERSEAS_SORTIES"type="text">
+            <input placeholder="MOP T overseas hours" id="MOP_T_OVERSEAS_HOURS"type="text">
+            <br><br>
+            <input placeholder="MOP P overseas sorties" id="MOP_P_OVERSEAS_SORTIES"type="text">
+            <input placeholder="MOP P overseas hours" id="MOP_P_OVERSEAS_HOURS"type="text">
+            <br><br>
+
+            <h4>Percentage: </h4>
+            <input placeholder="MOP percentage" id="MOP_PERCENTAGE"type="text">
+        </div>
+
+        <h2 class="upp">DAILY: </h2>
+        <div class="box">
+            <h4>Local: </h4>
+            <input placeholder="DAILY T local sorties" id="DAILY_T_LOCAL_SORTIES"type="text">
+            <input placeholder="DAILY T local hours" id="DAILY_T_LOCAL_HOURS"type="text">
+            <br><br>
+            <input placeholder="DAILY P local sorties" id="DAILY_P_LOCAL_SORTIES"type="text">
+            <input placeholder="DAILY P local hours" id="DAILY_P_LOCAL_HOURS"type="text">
+            <br><br>
+            <input placeholder="DAILY A local sorties" id="DAILY_A_LOCAL_SORTIES"type="text">
+            <input placeholder="DAILY A local hours" id="DAILY_A_LOCAL_HOURS"type="text">
+            <br><br>
+            <table>
+                <tr>
+                    <td>Local CXM1</td>
+                    <td><input value="0" id="LOCAL_CXM1"  type="text"></td>
+                </tr>
+                <tr>
+                    <td>Local CXM2</td>
+                    <td><input value="0" id="LOCAL_CXM2"  type="text"></td>
+                </tr>
+                <tr>
+                    <td>Local CXM3</td>
+                    <td><input value="0" id="LOCAL_CXM3"  type="text"></td>
+                </tr>
+                <tr>
+                    <td>Local CXM4</td>
+                    <td><input value="0" id="LOCAL_CXM4"  type="text"></td>
+                </tr>
+                <tr>
+                    <td>Local CXOPS</td>
+                    <td><input value="0" id="LOCAL_CXOPS"  type="text"></td>
+                </tr>
+                <tr>
+                    <td>Local CXOTH</td>
+                    <td><input value="0" id="LOCAL_CXOTH"  type="text"></td>
+                </tr>
+            </table>
+
+            <h4>Overseas: </h4>
+            <input placeholder="DAILY T overseas sorties" id="DAILY_T_OVERSEAS_SORTIES"type="text">
+            <input placeholder="DAILY T overseas hours" id="DAILY_T_OVERSEAS_HOURS"type="text">
+            <br><br>
+            <input placeholder="DAILY P overseas sorties" id="DAILY_P_OVERSEAS_SORTIES"type="text">
+            <input placeholder="DAILY P overseas hours" id="DAILY_P_OVERSEAS_HOURS"type="text">
+            <br><br>
+            <input placeholder="DAILY A overseas sorties" id="DAILY_A_OVERSEAS_SORTIES"type="text">
+            <input placeholder="DAILY A overseas hours" id="DAILY_A_OVERSEAS_HOURS"type="text">
+            <br><br>
+            <table>
+                <tr>
+                    <td>Overseas CXM1</td>
+                    <td><input value="0" id="OVERSEAS_CXM1"  type="text"></td>
+                </tr>
+                <tr>
+                    <td>Overseas CXM2</td>
+                    <td><input value="0" id="OVERSEAS_CXM2"  type="text"></td>
+                </tr>
+                <tr>
+                    <td>Overseas CXM3</td>
+                    <td><input value="0" id="OVERSEAS_CXM3"  type="text"></td>
+                </tr>
+                <tr>
+                    <td>Overseas CXM4</td>
+                    <td><input value="0" id="OVERSEAS_CXM4"  type="text"></td>
+                </tr>
+                <tr>
+                    <td>Overseas CXOPS</td>
+                    <td><input value="0" id="OVERSEAS_CXOPS"  type="text"></td>
+                </tr>
+                <tr>
+                    <td>Overseas CXOTH</td>
+                    <td><input value="0" id="OVERSEAS_CXOTH"  type="text"></td>
+                </tr>
+            </table>
+            <br><br>
+
+        </div><br><br>
+        <input type="submit" onclick="calculate_stats()">
+        <br><br><br>
+        <h3>Message</h3>
+        <textarea name="" id="message"></textarea><br>
+        <button onclick="copy('message')">Copy message</button>
+        <br><br><br>
+        <h3>Stats</h3>
+        <textarea name="" id="stats"></textarea><br>
+        <button onclick="copy('stats')">Copy stats</button>
+        <br><br><br>
+    </body>
+</html>

@@ -62,6 +62,7 @@
                 let YESTERDAY_ACCUMULATIVE_CXM4  = Number(my_array[6].split(",")[3]);
                 let YESTERDAY_ACCUMULATIVE_CXOPS = Number(my_array[6].split(",")[4]);
                 let YESTERDAY_ACCUMULATIVE_CXOTH = Number(my_array[6].split(",")[5]);
+                let YESTERDAY_ACCUMULATIVE_CXWX = Number(my_array[6].split(",")[6]);
 
                 let WORKYEAR_ACCUMULATIVE_SORTIES = Number(my_array[7].split(",")[0]);
                 let WORKYEAR_ACCUMULATIVE_HOURS   = Number(my_array[7].split(",")[1])
@@ -140,7 +141,8 @@
                 let LOCAL_CXM4 = Number(document.getElementById("LOCAL_CXM4").value);
                 let LOCAL_CXOPS = Number(document.getElementById("LOCAL_CXOPS").value);
                 let LOCAL_CXOTH = Number(document.getElementById("LOCAL_CXOTH").value);
-                let LOCAL_CXMX = LOCAL_CXM1 + LOCAL_CXM2 + LOCAL_CXM3 + LOCAL_CXM4 + LOCAL_CXOPS + LOCAL_CXOTH;
+                let LOCAL_CXWX = Number(document.getElementById("LOCAL_CXWX").value);
+                let LOCAL_CXMX = LOCAL_CXM1 + LOCAL_CXM2 + LOCAL_CXM3 + LOCAL_CXM4;
 
                 let OVERSEAS_CXM1 = Number(document.getElementById("OVERSEAS_CXM1").value);
                 let OVERSEAS_CXM2 = Number(document.getElementById("OVERSEAS_CXM2").value);
@@ -148,7 +150,8 @@
                 let OVERSEAS_CXM4 = Number(document.getElementById("OVERSEAS_CXM4").value);
                 let OVERSEAS_CXOPS = Number(document.getElementById("OVERSEAS_CXOPS").value);
                 let OVERSEAS_CXOTH = Number(document.getElementById("OVERSEAS_CXOTH").value);
-                let OVERSEAS_CXMX = OVERSEAS_CXM1 + OVERSEAS_CXM2 + OVERSEAS_CXM3 + OVERSEAS_CXM4 + OVERSEAS_CXOPS + OVERSEAS_CXOTH;
+                let OVERSEAS_CXWX = Number(document.getElementById("OVERSEAS_CXWX").value);
+                let OVERSEAS_CXMX = OVERSEAS_CXM1 + OVERSEAS_CXM2 + OVERSEAS_CXM3 + OVERSEAS_CXM4;
 
                 // CALCULATE TODAY ACCUMULATIVE
                 let TODAY_ACCUMULATIVE_CXM1 =  LOCAL_CXM1  + YESTERDAY_ACCUMULATIVE_CXM1  + OVERSEAS_CXM1 ;
@@ -157,6 +160,7 @@
                 let TODAY_ACCUMULATIVE_CXM4 =  LOCAL_CXM4  + YESTERDAY_ACCUMULATIVE_CXM4  + OVERSEAS_CXM4 ;
                 let TODAY_ACCUMULATIVE_CXOPS = LOCAL_CXOPS + YESTERDAY_ACCUMULATIVE_CXOPS + OVERSEAS_CXOPS;
                 let TODAY_ACCUMULATIVE_CXOTH = LOCAL_CXOTH + YESTERDAY_ACCUMULATIVE_CXOTH + OVERSEAS_CXOTH;
+                let TODAY_ACCUMULATIVE_CXWX = LOCAL_CXWX + YESTERDAY_ACCUMULATIVE_CXWX + OVERSEAS_CXWX;
 
                 
                 // CALCULATE PERCENTAGE
@@ -191,20 +195,33 @@ ${MOP_PERCENTAGE}%
 ===                                                                                                                            
                                                                                                                                             
 Daily - ${DAY} ${MONTH}                                                                                                                
-                                                                                                                                            
-LOCAL                                                                          
+`
+                if (DAILY_T_LOCAL_SORTIES != 0) {
+                    msg1 = msg1 + `LOCAL                                                                          
                                                                             
 <T> ${DAILY_T_LOCAL_SORTIES} / ${DAILY_T_LOCAL_HOURS.toFixed(1)}                                            
 <P> ${DAILY_P_LOCAL_SORTIES} / ${DAILY_P_LOCAL_HOURS.toFixed(1)}                            
 <A> ${DAILY_A_LOCAL_SORTIES} / ${DAILY_A_LOCAL_HOURS.toFixed(1)}         
                 
-${DAILY_NEG_LOCAL_SORTIES} / ${DAILY_NEG_LOCAL_HOURS.toFixed(1)}
+${DAILY_NEG_LOCAL_SORTIES} / ${DAILY_NEG_LOCAL_HOURS.toFixed(1)}`
+                if (LOCAL_CXMX > 0) {
+                    msg1 = msg1 + `\n${LOCAL_CXMX}CXMX\n`
+                }
+                if (LOCAL_CXWX > 0) {
+                    msg1 = msg1 + `\n${LOCAL_CXWX}CXWX\n`
+                }
+                if (LOCAL_CXOPS > 0) {
+                    msg1 = msg1 + `\n${LOCAL_CXOPS}CXOPS\n`
+                }
+                if (LOCAL_CXOTH > 0) {
+                    msg1 = msg1 + `\n${LOCAL_CXOTH}CXOTH\n`
+                }
+} 
+                if (DAILY_T_OVERSEAS_SORTIES != 0) {
+                    msg1 = msg1 + `
 
-${LOCAL_CXMX}CXMX
 
     
-    
-            
 OVERSEAS              
                 
 <T> ${DAILY_T_OVERSEAS_SORTIES} / ${DAILY_T_OVERSEAS_HOURS.toFixed(1)}       
@@ -214,10 +231,30 @@ OVERSEAS
 ${DAILY_NEG_OVERSEAS_SORTIES} / ${DAILY_NEG_OVERSEAS_HOURS.toFixed(1)} 
 
 ${OVERSEAS_CXMX}CXMX
-                                                                           
-Monthly - ${MONTH}                                               
-                                                                            
-LOCAL                                                                          
+   
+`
+                if (OVERSEAS_CXMX > 0) {
+                    msg1 = msg1 + `\n${OVERSEAS_CXMX}CXMX\n`
+                }
+                if (OVERSEAS_CXWX > 0) {
+                    msg1 = msg1 + `\n${OVERSEAS_CXWX}CXMX\n`
+                }
+                if (OVERSEAS_CXOPS > 0) {
+                    msg1 = msg1 + `\n${OVERSEAS_CXOPS}CXMX\n`
+                }
+                if (OVERSEAS_CXOTH > 0) {
+                    msg1 = msg1 + `\n${OVERSEAS_CXOTH}CXMX\n`
+                }
+}                                                                                                                                                        
+                msg1 = msg1 + `
+       
+                
+                
+Monthly - ${MONTH}
+                
+`                
+                if (DAILY_LOCAL_T_TOTAL_SORTIES != 0) {
+                    msg1 = msg1 + `LOCAL                                                                          
             
 
 <T> ${DAILY_LOCAL_T_TOTAL_SORTIES} / ${DAILY_LOCAL_T_TOTAL_HOURS.toFixed(1)}                  
@@ -225,29 +262,51 @@ LOCAL
 <A> ${DAILY_LOCAL_A_TOTAL_SORTIES} / ${DAILY_LOCAL_A_TOTAL_HOURS.toFixed(1)}                            
                                                                             
 ${DAILY_LOCAL_NEG_TOTAL_SORTIES } / ${DAILY_LOCAL_NEG_TOTAL_HOURS.toFixed(1)}
-                
-OVERSEAS              
+
+`
+                }
+                if (DAILY_OVERSEAS_T_TOTAL_SORTIES != 0) {
+                    msg1 = msg1 + `OVERSEAS              
                 
 <T> ${DAILY_OVERSEAS_T_TOTAL_SORTIES} / ${DAILY_OVERSEAS_T_TOTAL_HOURS.toFixed(1)}                  
 <P> ${DAILY_OVERSEAS_P_TOTAL_SORTIES} / ${DAILY_OVERSEAS_P_TOTAL_HOURS.toFixed(1)}                             
 <A> ${DAILY_OVERSEAS_A_TOTAL_SORTIES} / ${DAILY_OVERSEAS_A_TOTAL_HOURS.toFixed(1)}                            
                                                                             
 ${DAILY_OVERSEAS_NEG_TOTAL_SORTIES } / ${DAILY_OVERSEAS_NEG_TOTAL_HOURS.toFixed(1)}
-                
-TOTAL              
+                      
+`
+                }                                                         
+                msg1 = msg1 + `TOTAL              
                 
 <T> ${DAILY_T_TOTAL_SORTIES} / ${DAILY_T_TOTAL_HOURS.toFixed(1)}                  
 <P> ${DAILY_P_TOTAL_SORTIES} / ${DAILY_P_TOTAL_HOURS.toFixed(1)}                             
-<A> ${DAILY_A_TOTAL_SORTIES} / ${DAILY_A_TOTAL_HOURS.toFixed(1)}   
-            
-${TODAY_ACCUMULATIVE_CXM1}CXM1     
-${TODAY_ACCUMULATIVE_CXM2}CXM2  
-${TODAY_ACCUMULATIVE_CXM3}CXM3    
-${TODAY_ACCUMULATIVE_CXM4}CXM4  
-${TODAY_ACCUMULATIVE_CXOPS}CXOPS     
-${TODAY_ACCUMULATIVE_CXOTH}CXOTH  
+<A> ${DAILY_A_TOTAL_SORTIES} / ${DAILY_A_TOTAL_HOURS.toFixed(1)}  
+
+`
+
+                if (TODAY_ACCUMULATIVE_CXM1 != 0) {
+                    msg1 += `${TODAY_ACCUMULATIVE_CXM1}CXM1\n`
+                }
+                if (TODAY_ACCUMULATIVE_CXM2 != 0) {
+                    msg1 += `${TODAY_ACCUMULATIVE_CXM2}CXM2\n`
+                }
+                if (TODAY_ACCUMULATIVE_CXM3 != 0) {
+                    msg1 += `${TODAY_ACCUMULATIVE_CXM3}CXM3\n`
+                }
+                if (TODAY_ACCUMULATIVE_CXM4 != 0) {
+                    msg1 += `${TODAY_ACCUMULATIVE_CXM4}CXM4\n`
+                }
+                if (TODAY_ACCUMULATIVE_CXOPS != 0) {
+                    msg1 += `${TODAY_ACCUMULATIVE_CXOPS}CXOPS\n`
+                }
+                if (TODAY_ACCUMULATIVE_CXOTH != 0) {
+                    msg1 += `${TODAY_ACCUMULATIVE_CXMOTH}CXMOTH\n`
+                }
+                if (TODAY_ACCUMULATIVE_CXWX != 0) {
+                    msg1 += `${TODAY_ACCUMULATIVE_CXWX}CXMWX\n`
+                }                                                                                                
+                msg1 += `
     
-                    
 ${DAILY_NEG_TOTAL_SORTIES} / ${DAILY_NEG_TOTAL_HOURS.toFixed(1)}
                                                                                                 
 Achieved % for the month:                                                                                                                                            
@@ -256,15 +315,14 @@ Forecasted Achieved: ${FORECASTED_ACHEIVED.toFixed(2)}%
 Current Achieved:    ${CURRENT_ACHEIVED.toFixed(2)}%  
     
 Workyear:      
-${wk1} / ${wk2.toFixed(1)} 
-                `;
-                let msg2 = `${DAILY_LOCAL_T_TOTAL_SORTIES},${DAILY_LOCAL_T_TOTAL_HOURS.toFixed(1)}                  
+${wk1} / ${wk2.toFixed(1)}`;
+let msg2 = `${DAILY_LOCAL_T_TOTAL_SORTIES},${DAILY_LOCAL_T_TOTAL_HOURS.toFixed(1)}                  
 ${DAILY_LOCAL_P_TOTAL_SORTIES},${DAILY_LOCAL_P_TOTAL_HOURS.toFixed(1)}                             
 ${DAILY_LOCAL_A_TOTAL_SORTIES},${DAILY_LOCAL_A_TOTAL_HOURS.toFixed(1)}                                    
 ${DAILY_OVERSEAS_T_TOTAL_SORTIES},${DAILY_OVERSEAS_T_TOTAL_HOURS.toFixed(1)}                  
 ${DAILY_OVERSEAS_P_TOTAL_SORTIES},${DAILY_OVERSEAS_P_TOTAL_HOURS.toFixed(1)}                             
 ${DAILY_OVERSEAS_A_TOTAL_SORTIES},${DAILY_OVERSEAS_A_TOTAL_HOURS.toFixed(1)}
-${TODAY_ACCUMULATIVE_CXM1},${TODAY_ACCUMULATIVE_CXM2},${TODAY_ACCUMULATIVE_CXM3},${TODAY_ACCUMULATIVE_CXM4},${TODAY_ACCUMULATIVE_CXOPS},${TODAY_ACCUMULATIVE_CXOTH}
+${TODAY_ACCUMULATIVE_CXM1},${TODAY_ACCUMULATIVE_CXM2},${TODAY_ACCUMULATIVE_CXM3},${TODAY_ACCUMULATIVE_CXM4},${TODAY_ACCUMULATIVE_CXOPS},${TODAY_ACCUMULATIVE_CXOTH},${TODAY_ACCUMULATIVE_CXWX}
 ${wk1},${wk2}`;
                 document.getElementById("message").value = msg1;
                 document.getElementById("stats").value = msg2;
@@ -313,10 +371,6 @@ ${wk1},${wk2}`;
             <input placeholder="DAILY A local sorties" id="DAILY_A_LOCAL_SORTIES"type="text">
             <input placeholder="DAILY A local hours" id="DAILY_A_LOCAL_HOURS"type="text">
             <br><br>
-            <label>GHE<br>
-            <input value="0" id="DAILY_GHE_LOCAL_SORTIES"type="text">
-            <input value="0" id="DAILY_GHE_LOCAL_HOURS"type="text">
-            </label>
             <br><br>
             <table>
                 <tr>
@@ -342,6 +396,10 @@ ${wk1},${wk2}`;
                 <tr>
                     <td>Local CXOTH</td>
                     <td><input value="0" id="LOCAL_CXOTH"  type="text"></td>
+                </tr>
+                <tr>
+                    <td>Local CXWX</td>
+                    <td><input value="0" id="LOCAL_CXWX"  type="text"></td>
                 </tr>
             </table>
 
@@ -379,6 +437,10 @@ ${wk1},${wk2}`;
                 <tr>
                     <td>Overseas CXOTH</td>
                     <td><input value="0" id="OVERSEAS_CXOTH"  type="text"></td>
+                </tr>
+                <tr>
+                    <td>Overseas CXWX</td>
+                    <td><input value="0" id="OVERSEAS_CXWX"  type="text"></td>
                 </tr>
             </table>
             <br><br>

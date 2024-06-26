@@ -92,8 +92,6 @@
                 let DAILY_P_LOCAL_HOURS = parseFloat(document.getElementById("DAILY_P_LOCAL_HOURS").value) || 0;
                 let DAILY_A_LOCAL_SORTIES = Number(document.getElementById("DAILY_A_LOCAL_SORTIES").value) || 0;
                 let DAILY_A_LOCAL_HOURS = parseFloat(document.getElementById("DAILY_A_LOCAL_HOURS").value) || 0;
-                let DAILY_GHE_LOCAL_SORTIES = Number(document.getElementById("DAILY_GHE_LOCAL_SORTIES").value) || 0;
-                let DAILY_GHE_LOCAL_HOURS = parseFloat(document.getElementById("DAILY_GHE_LOCAL_HOURS").value) || 0;
                 let DAILY_NEG_LOCAL_SORTIES = DAILY_A_LOCAL_SORTIES - DAILY_T_LOCAL_SORTIES;
                 let DAILY_NEG_LOCAL_HOURS = DAILY_A_LOCAL_HOURS - DAILY_T_LOCAL_HOURS;
             
@@ -168,8 +166,8 @@
                 let CURRENT_ACHEIVED = DAILY_A_TOTAL_HOURS * 100 / MOP_T_TOTAL_HOURS;
 
                 // CALCULATE WORKYEAR
-                let wk1 = WORKYEAR_ACCUMULATIVE_SORTIES + (DAILY_A_LOCAL_SORTIES + DAILY_A_OVERSEAS_SORTIES - DAILY_T_LOCAL_SORTIES - DAILY_T_OVERSEAS_SORTIES) - DAILY_GHE_LOCAL_SORTIES;
-                let wk2 = WORKYEAR_ACCUMULATIVE_HOURS + (DAILY_A_LOCAL_HOURS + DAILY_A_OVERSEAS_HOURS - DAILY_T_LOCAL_HOURS - DAILY_T_OVERSEAS_HOURS) - DAILY_GHE_LOCAL_HOURS;
+                let wk1 = WORKYEAR_ACCUMULATIVE_SORTIES + (DAILY_A_LOCAL_SORTIES + DAILY_A_OVERSEAS_SORTIES - DAILY_T_LOCAL_SORTIES - DAILY_T_OVERSEAS_SORTIES) ;
+                let wk2 = WORKYEAR_ACCUMULATIVE_HOURS + (DAILY_A_LOCAL_HOURS + DAILY_A_OVERSEAS_HOURS - DAILY_T_LOCAL_HOURS - DAILY_T_OVERSEAS_HOURS);
 
                 // COMPILE THE MESSAGES
                 let msg1 = `Good day sirs, here are the stats for today. Thank you sirs                                                                                                                                        

@@ -194,7 +194,7 @@ ${MOP_PERCENTAGE}%
                                                                                                                                             
 Daily - ${DAY} ${MONTH}                                                                                                                
 `
-                if (DAILY_T_LOCAL_SORTIES != 0) {
+                if (DAILY_P_LOCAL_SORTIES != 0) {
                     msg1 = msg1 + `LOCAL                                                                          
                                                                             
 <T> ${DAILY_T_LOCAL_SORTIES} / ${DAILY_T_LOCAL_HOURS.toFixed(1)}                                            
@@ -251,7 +251,7 @@ ${OVERSEAS_CXMX}CXMX
 Monthly - ${MONTH}
                 
 `                
-                if (DAILY_LOCAL_T_TOTAL_SORTIES != 0) {
+                if (DAILY_LOCAL_P_TOTAL_SORTIES != 0) {
                     msg1 = msg1 + `LOCAL                                                                          
             
 
@@ -298,7 +298,7 @@ ${DAILY_OVERSEAS_NEG_TOTAL_SORTIES } / ${DAILY_OVERSEAS_NEG_TOTAL_HOURS.toFixed(
                     msg1 += `${TODAY_ACCUMULATIVE_CXOPS}CXOPS\n`
                 }
                 if (TODAY_ACCUMULATIVE_CXOTH != 0) {
-                    msg1 += `${TODAY_ACCUMULATIVE_CXOTH}CXOTH\n`
+                    msg1 += `${TODAY_ACCUMULATIVE_CXOTH}CXMOTH\n`
                 }
                 if (TODAY_ACCUMULATIVE_CXWX != 0) {
                     msg1 += `${TODAY_ACCUMULATIVE_CXWX}CXWX\n`

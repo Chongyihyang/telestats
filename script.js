@@ -26,8 +26,8 @@ function calculate_stats() {
     // DATE
     const mth = ["", 'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
     let today = new Date();
-    let DAY = 31 || String(today.getDate()).padStart(2, '0');
-    let MON = 8 || Number(String(today.getMonth() + 1).padStart(2, '0'));
+    let DAY = String(today.getDate()).padStart(2, '0');
+    let MON = Number(String(today.getMonth() + 1).padStart(2, '0'));
     let MONTH = mth[MON];
     let YEAR = today.getFullYear();
 

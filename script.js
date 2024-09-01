@@ -7,13 +7,14 @@ function copy(textarea) {
     document.execCommand('copy')
 }
 
-function isLastDay() {
-    const dt = new Date();
-    var test = new Date(dt.getTime()),
-        month = test.getMonth();
 
-    test.setDate(test.getDate() + 1);
-    return test.getMonth() !== month;
+function lastFridayOfMonth(year, month) { "use strict";
+	var lastDay = new Date(year, month+1, 0);
+	if(lastDay.getDay() < 5) {
+		lastDay.setDate(lastDay.getDate() - 7);
+	}
+	lastDay.setDate(lastDay.getDate() - (lastDay.getDay() -5));
+	return lastDay.getDate();
 }
 
 function calculate_stats() {
@@ -25,23 +26,24 @@ function calculate_stats() {
     // DATE
     const mth = ["", 'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
     let today = new Date();
-    let DAY = String(today.getDate()).padStart(2, '0');
-    let MONTH = mth[Number(String(today.getMonth() + 1).padStart(2, '0'))];
+    let DAY = 31 || String(today.getDate()).padStart(2, '0');
+    let MON = 8 || Number(String(today.getMonth() + 1).padStart(2, '0'));
+    let MONTH = mth[MON];
     let YEAR = today.getFullYear();
 
 
     // YESTERDAY ACCUMULATIVE
     let ystd = document.getElementById("YTD").value;
     let my_array = ystd.split("\n");
-    if (my_array.length != 9) {
+    if (my_array.length != 10) {
         document.getElementById("YTD").style.borderColor = "red";
-        alert(`There needs to be 9 lines in the textarea, but there are ${my_array.length}! Check FAQ for more info.`);
+        alert(`There needs to be 10 lines in the textarea, but there are ${my_array.length}! Check FAQ for more info.`);
         return;
     }
 
     let error = false;
-    for (let i = 0; i < 8; i ++) {
-        if (i != 6 && my_array[i].split(",").length != 2) {
+    for (let i = 0; i < 10; i ++) {
+        if (i != 6 && i != 8 && i != 9 && my_array[i].split(",").length != 2) {
             document.getElementById("YTD").style.borderColor = "red";
             error = true;
             alert(`There needs to be 2 items in line ${i + 1}! Check  FAQ for more info.`);
@@ -49,7 +51,17 @@ function calculate_stats() {
         if (i == 6 && my_array[i].split(",").length != 7) {
             document.getElementById("YTD").style.borderColor= "red";
             error = true;
-            alert(`There needs to be 7 items in line 6, but there are ${my_array[i].split(",").length}! Check FAQ for more info.`);
+            alert(`There needs to be 7 items in line 7, but there are ${my_array[i].split(",").length}! Check FAQ for more info.`);
+        }
+        if (i == 8 && my_array[i].split(",").length != 8) {
+            document.getElementById("YTD").style.borderColor= "red";
+            error = true;
+            alert(`There needs to be 8 items in line 9, but there are ${my_array[i].split(",").length}! Check FAQ for more info.`);
+        }
+        if (i == 9 && my_array[i].split(",").length != 1) {
+            document.getElementById("YTD").style.borderColor= "red";
+            error = true;
+            alert(`There needs to be 1 item in line 9, but there are ${my_array[i].split(",").length}! Check FAQ for more info.`);
         }
     }
 
@@ -75,7 +87,7 @@ function calculate_stats() {
     let YESTERDAY_ACCUMULATIVE_CXOTH = 0;
     let YESTERDAY_ACCUMULATIVE_CXWX =  0;       
 
-    if (DAY != 1) {
+    if (MON == my_array[9]) {
         YESTERDAY_LOCAL_ACCUMULATIVE_T_SORTIES = Number(my_array[0].split(",")[0]);
         YESTERDAY_LOCAL_ACCUMULATIVE_T_HOURS   = parseFloat(my_array[0].split(",")[1]);
         YESTERDAY_LOCAL_ACCUMULATIVE_P_SORTIES = Number(my_array[1].split(",")[0]);
@@ -96,15 +108,15 @@ function calculate_stats() {
         YESTERDAY_ACCUMULATIVE_CXM4  = Number(my_array[6].split(",")[3]);
         YESTERDAY_ACCUMULATIVE_CXOPS = Number(my_array[6].split(",")[4]);
         YESTERDAY_ACCUMULATIVE_CXOTH = Number(my_array[6].split(",")[5]);
-        YESTERDAY_ACCUMULATIVE_CXWX = Number(my_array[6].split(",")[6]);
+        YESTERDAY_ACCUMULATIVE_CXWX  = Number(my_array[6].split(",")[6]);
     }
 
-    let WORKYEAR_ACCUMULATIVE_SORTIES = 0;
-    let WORKYEAR_ACCUMULATIVE_HOURS   = 0;
+    let WORKYEAR_ACCUMULATIVE_SORTIES = Number(my_array[7].split(",")[0]);
+    let WORKYEAR_ACCUMULATIVE_HOURS   = Number(my_array[7].split(",")[1]);
 
-    if (isLastDay() == false && MONTH != "DEC") {
-        WORKYEAR_ACCUMULATIVE_SORTIES = Number(my_array[7].split(",")[0]);
-        WORKYEAR_ACCUMULATIVE_HOURS   = Number(my_array[7].split(",")[1]);
+    if (MON == 4 && my_array[9] == 3) {
+        WORKYEAR_ACCUMULATIVE_SORTIES = 0;
+        WORKYEAR_ACCUMULATIVE_HOURS   = 0;
     }
 
     // MOP 
@@ -173,6 +185,7 @@ function calculate_stats() {
     let DAILY_NEG_TOTAL_SORTIES = DAILY_LOCAL_NEG_TOTAL_SORTIES  + DAILY_OVERSEAS_NEG_TOTAL_SORTIES ;
     let DAILY_NEG_TOTAL_HOURS   = DAILY_LOCAL_NEG_TOTAL_HOURS    + DAILY_OVERSEAS_NEG_TOTAL_HOURS   ;
 
+    
     // CXMX FOR LOCAL AND OVERSEAS
     let LOCAL_CXM1 = Number(document.getElementById("LOCAL_CXM1").value);
     let LOCAL_CXM2 = Number(document.getElementById("LOCAL_CXM2").value);
@@ -182,13 +195,13 @@ function calculate_stats() {
     let LOCAL_CXOTH = Number(document.getElementById("LOCAL_CXOTH").value);
     let LOCAL_CXWX = Number(document.getElementById("LOCAL_CXWX").value);
     let LOCAL_CXMX = LOCAL_CXM1 + LOCAL_CXM2 + LOCAL_CXM3 + LOCAL_CXM4;
-
+    
     let sum = LOCAL_CXMX + LOCAL_CXOPS + LOCAL_CXOTH + LOCAL_CXWX + DAILY_A_LOCAL_SORTIES;
     if (Number(sum) - Number(DAILY_P_LOCAL_SORTIES) != 0) {
         document.getElementById("DAILY_P_LOCAL_SORTIES").style.borderColor = "red";
         alert(`Total CX + flying sorties for local != local planned sorties, sum: ${sum}, total: ${DAILY_P_LOCAL_SORTIES}`);
     }
-
+    
     let OVERSEAS_CXM1 = Number(document.getElementById("OVERSEAS_CXM1").value);
     let OVERSEAS_CXM2 = Number(document.getElementById("OVERSEAS_CXM2").value);
     let OVERSEAS_CXM3 = Number(document.getElementById("OVERSEAS_CXM3").value);
@@ -197,14 +210,14 @@ function calculate_stats() {
     let OVERSEAS_CXOTH = Number(document.getElementById("OVERSEAS_CXOTH").value);
     let OVERSEAS_CXWX = Number(document.getElementById("OVERSEAS_CXWX").value);
     let OVERSEAS_CXMX = OVERSEAS_CXM1 + OVERSEAS_CXM2 + OVERSEAS_CXM3 + OVERSEAS_CXM4;
-
-
+    
+    
     sum = OVERSEAS_CXMX + OVERSEAS_CXOPS + OVERSEAS_CXOTH + OVERSEAS_CXWX + DAILY_A_OVERSEAS_SORTIES;
     if (Number(sum) - Number(DAILY_P_OVERSEAS_SORTIES) != 0) {
         document.getElementById("DAILY_P_OVERSEAS_SORTIES").style.borderColor = "red";
         alert(`Total CX + flying sorties for overseas != overseas planned sorties, sum: ${sum}, total: ${DAILY_P_OVERSEAS_SORTIES}`);
     }
-
+    
     // CALCULATE TODAY ACCUMULATIVE
     let TODAY_ACCUMULATIVE_CXM1 =  LOCAL_CXM1  + YESTERDAY_ACCUMULATIVE_CXM1  + OVERSEAS_CXM1 ;
     let TODAY_ACCUMULATIVE_CXM2 =  LOCAL_CXM2  + YESTERDAY_ACCUMULATIVE_CXM2  + OVERSEAS_CXM2 ;
@@ -213,30 +226,43 @@ function calculate_stats() {
     let TODAY_ACCUMULATIVE_CXOPS = LOCAL_CXOPS + YESTERDAY_ACCUMULATIVE_CXOPS + OVERSEAS_CXOPS;
     let TODAY_ACCUMULATIVE_CXOTH = LOCAL_CXOTH + YESTERDAY_ACCUMULATIVE_CXOTH + OVERSEAS_CXOTH;
     let TODAY_ACCUMULATIVE_CXWX = LOCAL_CXWX + YESTERDAY_ACCUMULATIVE_CXWX + OVERSEAS_CXWX;
+    
+    if (DAY >= lastFridayOfMonth(YEAR, MON)) {
+        MOP_T_LOCAL_SORTIES    = DAILY_LOCAL_T_TOTAL_SORTIES ;
+        MOP_T_LOCAL_HOURS      = DAILY_LOCAL_T_TOTAL_HOURS   ; 
+        MOP_P_LOCAL_SORTIES    = DAILY_LOCAL_P_TOTAL_SORTIES ;
+        MOP_P_LOCAL_HOURS      = DAILY_LOCAL_P_TOTAL_HOURS   ;  
+                              
+        MOP_T_OVERSEAS_SORTIES = DAILY_OVERSEAS_T_TOTAL_SORTIES ;
+        MOP_T_OVERSEAS_HOURS   = DAILY_OVERSEAS_T_TOTAL_HOURS   ;
+        MOP_P_OVERSEAS_SORTIES = DAILY_OVERSEAS_P_TOTAL_SORTIES ;
+        MOP_P_OVERSEAS_HOURS   = DAILY_OVERSEAS_P_TOTAL_HOURS   ;
+        MOP_T_TOTAL_SORTIES = MOP_T_LOCAL_SORTIES + MOP_T_OVERSEAS_SORTIES;
+        MOP_T_TOTAL_HOURS = MOP_T_LOCAL_HOURS + MOP_T_OVERSEAS_HOURS;
+        MOP_P_TOTAL_SORTIES = MOP_P_LOCAL_SORTIES + MOP_P_OVERSEAS_SORTIES;
+        MOP_P_TOTAL_HOURS = MOP_P_LOCAL_HOURS + MOP_P_OVERSEAS_HOURS;
 
+        MOP_PERCENTAGE = (MOP_P_TOTAL_HOURS *100/ MOP_T_TOTAL_HOURS).toFixed(2);
+    }
     
     // CALCULATE PERCENTAGE
     let FORECASTED_ACHEIVED = (MOP_P_TOTAL_HOURS - DAILY_P_TOTAL_HOURS + DAILY_A_TOTAL_HOURS) * 100 / MOP_T_TOTAL_HOURS;
     let CURRENT_ACHEIVED = DAILY_A_TOTAL_HOURS * 100 / MOP_T_TOTAL_HOURS;
-
+    
     if (FORECASTED_ACHEIVED == Infinity || FORECASTED_ACHEIVED == -Infinity) {
         alert("MOP tasked total hours is 0, so forecasted and current achieved is infinity")
     }
-
-    if (isLastDay() == true) {
-        FORECASTED_ACHEIVED = CURRENT_ACHEIVED;
-    }
-
+    
     // CALCULATE WORKYEAR
     let wk1 = WORKYEAR_ACCUMULATIVE_SORTIES + (DAILY_A_LOCAL_SORTIES + DAILY_A_OVERSEAS_SORTIES - DAILY_T_LOCAL_SORTIES - DAILY_T_OVERSEAS_SORTIES) ;
     let wk2 = WORKYEAR_ACCUMULATIVE_HOURS + (DAILY_A_LOCAL_HOURS + DAILY_A_OVERSEAS_HOURS - DAILY_T_LOCAL_HOURS - DAILY_T_OVERSEAS_HOURS);
-
+    
     if (error == true) {
         return;
     }                       
     // COMPILE THE MESSAGES
     let msg1 = `Good day sirs, here are the stats for today. Thank you sirs                                                                                                                                        
-
+    
 Month of ${MONTH} ${YEAR}             
     
 Local              
@@ -385,7 +411,8 @@ ${DAILY_OVERSEAS_P_TOTAL_SORTIES},${DAILY_OVERSEAS_P_TOTAL_HOURS.toFixed(1)}
 ${DAILY_OVERSEAS_A_TOTAL_SORTIES},${DAILY_OVERSEAS_A_TOTAL_HOURS.toFixed(1)}
 ${TODAY_ACCUMULATIVE_CXM1},${TODAY_ACCUMULATIVE_CXM2},${TODAY_ACCUMULATIVE_CXM3},${TODAY_ACCUMULATIVE_CXM4},${TODAY_ACCUMULATIVE_CXOPS},${TODAY_ACCUMULATIVE_CXOTH},${TODAY_ACCUMULATIVE_CXWX}
 ${wk1.toFixed(1)},${wk2.toFixed(1)}
-${MOP_T_LOCAL_SORTIES},${MOP_T_LOCAL_HOURS},${MOP_P_LOCAL_SORTIES},${MOP_P_LOCAL_HOURS},${MOP_T_OVERSEAS_SORTIES},${MOP_T_OVERSEAS_HOURS},${MOP_P_OVERSEAS_SORTIES},${MOP_P_OVERSEAS_HOURS}`;
+${MOP_T_LOCAL_SORTIES},${MOP_T_LOCAL_HOURS},${MOP_P_LOCAL_SORTIES},${MOP_P_LOCAL_HOURS},${MOP_T_OVERSEAS_SORTIES},${MOP_T_OVERSEAS_HOURS},${MOP_P_OVERSEAS_SORTIES},${MOP_P_OVERSEAS_HOURS}
+${MON}`;
     document.getElementById("message").value = msg1;
     document.getElementById("stats").value = msg2;
 }

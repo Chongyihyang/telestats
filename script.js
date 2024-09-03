@@ -120,15 +120,15 @@ function calculate_stats() {
     }
 
     // MOP 
-    let MOP_T_LOCAL_SORTIES = Number(document.getElementById("MOP_T_LOCAL_SORTIES").value) || Number(my_array[8].split(",")[0]);
-    let MOP_T_LOCAL_HOURS = parseFloat(document.getElementById("MOP_T_LOCAL_HOURS").value) || Number(my_array[8].split(",")[1]) ;
-    let MOP_P_LOCAL_SORTIES = Number(document.getElementById("MOP_P_LOCAL_SORTIES").value) || Number(my_array[8].split(",")[2]);
-    let MOP_P_LOCAL_HOURS = parseFloat(document.getElementById("MOP_P_LOCAL_HOURS").value) || Number(my_array[8].split(",")[3]);
+    let MOP_T_LOCAL_SORTIES = Number(document.getElementById("MOP_T_LOCAL_SORTIES").value || my_array[8].split(",")[0]);
+    let MOP_T_LOCAL_HOURS = parseFloat(document.getElementById("MOP_T_LOCAL_HOURS").value || my_array[8].split(",")[1]) ;
+    let MOP_P_LOCAL_SORTIES = Number(document.getElementById("MOP_P_LOCAL_SORTIES").value || my_array[8].split(",")[2]);
+    let MOP_P_LOCAL_HOURS = parseFloat(document.getElementById("MOP_P_LOCAL_HOURS").value || my_array[8].split(",")[3]);
                               
-    let MOP_T_OVERSEAS_SORTIES = Number(document.getElementById("MOP_T_OVERSEAS_SORTIES").value) || Number(my_array[8].split(",")[4]);
-    let MOP_T_OVERSEAS_HOURS = parseFloat(document.getElementById("MOP_T_OVERSEAS_HOURS").value) || Number(my_array[8].split(",")[5]);
-    let MOP_P_OVERSEAS_SORTIES = Number(document.getElementById("MOP_P_OVERSEAS_SORTIES").value) || Number(my_array[8].split(",")[6]);
-    let MOP_P_OVERSEAS_HOURS = parseFloat(document.getElementById("MOP_P_OVERSEAS_HOURS").value) || Number(my_array[8].split(",")[7]);
+    let MOP_T_OVERSEAS_SORTIES = Number(document.getElementById("MOP_T_OVERSEAS_SORTIES").value || my_array[8].split(",")[4]);
+    let MOP_T_OVERSEAS_HOURS = parseFloat(document.getElementById("MOP_T_OVERSEAS_HOURS").value || my_array[8].split(",")[5]);
+    let MOP_P_OVERSEAS_SORTIES = Number(document.getElementById("MOP_P_OVERSEAS_SORTIES").value || my_array[8].split(",")[6]);
+    let MOP_P_OVERSEAS_HOURS = parseFloat(document.getElementById("MOP_P_OVERSEAS_HOURS").value || my_array[8].split(",")[7]);
 
     let MOP_T_TOTAL_SORTIES = MOP_T_LOCAL_SORTIES + MOP_T_OVERSEAS_SORTIES;
     let MOP_T_TOTAL_HOURS = MOP_T_LOCAL_HOURS + MOP_T_OVERSEAS_HOURS;
@@ -247,7 +247,7 @@ function calculate_stats() {
     
     // CALCULATE PERCENTAGE
     let FORECASTED_ACHEIVED = (MOP_P_TOTAL_HOURS - DAILY_P_TOTAL_HOURS + DAILY_A_TOTAL_HOURS) * 100 / MOP_T_TOTAL_HOURS;
-    let CURRENT_ACHEIVED = DAILY_A_TOTAL_HOURS * 100 / MOP_T_TOTAL_HOURS;
+    let CURRENT_ACHEIVED = DAILY_A_TOTAL_HOURS * 100 / DAILY_T_TOTAL_HOURS;
     
     if (FORECASTED_ACHEIVED == Infinity || FORECASTED_ACHEIVED == -Infinity) {
         alert("MOP tasked total hours is 0, so forecasted and current achieved is infinity")
@@ -281,9 +281,8 @@ Total
 <P> ${MOP_P_TOTAL_SORTIES} / ${MOP_P_TOTAL_HOURS.toFixed(1)}                                                       
                                                                                                     
 ${MOP_PERCENTAGE}%                                                                                           
-===                                                                                                                            
-                                                                                                                                
-Daily - ${DAY} ${MONTH}                                                                                                                
+=============================
+\`DAILY - ${DAY} ${MONTH}\`
 `
     if (DAILY_P_LOCAL_SORTIES != 0) {
         msg1 = msg1 + `LOCAL                                                                          
@@ -292,19 +291,28 @@ Daily - ${DAY} ${MONTH}
 <P> ${DAILY_P_LOCAL_SORTIES} / ${DAILY_P_LOCAL_HOURS.toFixed(1)}                            
 <A> ${DAILY_A_LOCAL_SORTIES} / ${DAILY_A_LOCAL_HOURS.toFixed(1)}         
     
-${DAILY_NEG_LOCAL_SORTIES} / ${DAILY_NEG_LOCAL_HOURS.toFixed(1)}\n`
-if (LOCAL_CXMX > 0) {
-msg1 = msg1 + `${LOCAL_CXMX}CXMX\n`
+**${DAILY_NEG_LOCAL_SORTIES} / ${DAILY_NEG_LOCAL_HOURS.toFixed(1)}**\n`
+if (LOCAL_CXM1 != 0) {
+    msg1 += `${LOCAL_CXM1}CXM1\n`
 }
-if (LOCAL_CXWX > 0) {
-msg1 = msg1 + `${LOCAL_CXWX}CXWX\n`
+if (LOCAL_CXM2 != 0) {
+    msg1 += `${LOCAL_CXM2}CXM2\n`
 }
-if (LOCAL_CXOPS > 0) {
-msg1 = msg1 + `${LOCAL_CXOPS}CXOPS\n`
+if (LOCAL_CXM3 != 0) {
+    msg1 += `${LOCAL_CXM3}CXM3\n`
 }
-if (LOCAL_CXOTH > 0) {
-msg1 = msg1 + `${LOCAL_CXOTH}CXOTH`
+if (LOCAL_CXM4 != 0) {
+    msg1 += `${LOCAL_CXM4}CXM4\n`
 }
+if (LOCAL_CXOPS != 0) {
+    msg1 += `${LOCAL_CXOPS}CXOPS\n`
+}
+if (LOCAL_CXOTH != 0) {
+    msg1 += `${LOCAL_CXOTH}CXOTH\n`
+}
+if (LOCAL_CXWX != 0) {
+    msg1 += `${LOCAL_CXWX}CXWX\n`
+} 
 } 
     if (DAILY_P_OVERSEAS_SORTIES != 0) {
         msg1 = msg1 + `
@@ -317,26 +325,35 @@ OVERSEAS
 <P> ${DAILY_P_OVERSEAS_SORTIES} / ${DAILY_P_OVERSEAS_HOURS.toFixed(1)}        
 <A> ${DAILY_A_OVERSEAS_SORTIES} / ${DAILY_A_OVERSEAS_HOURS.toFixed(1)}   
     
-${DAILY_NEG_OVERSEAS_SORTIES} / ${DAILY_NEG_OVERSEAS_HOURS.toFixed(1)}\n`
+**${DAILY_NEG_OVERSEAS_SORTIES} / ${DAILY_NEG_OVERSEAS_HOURS.toFixed(1)}**\n`
 
-if (OVERSEAS_CXMX > 0) {
-msg1 = msg1 + `${OVERSEAS_CXMX}CXMX\n`
+if (OVERSEAS_CXM1 != 0) {
+    msg1 += `${OVERSEAS_CXM1}CXM1\n`
 }
-if (OVERSEAS_CXWX > 0) {
-msg1 = msg1 + `${OVERSEAS_CXWX}CXWX\n`
+if (OVERSEAS_CXM2 != 0) {
+    msg1 += `${OVERSEAS_CXM2}CXM2\n`
 }
-if (OVERSEAS_CXOPS > 0) {
-msg1 = msg1 + `${OVERSEAS_CXOPS}CXOPS\n`
+if (OVERSEAS_CXM3 != 0) {
+    msg1 += `${OVERSEAS_CXM3}CXM3\n`
 }
-if (OVERSEAS_CXOTH > 0) {
-msg1 = msg1 + `${OVERSEAS_CXOTH}CXOTH`
+if (OVERSEAS_CXM4 != 0) {
+    msg1 += `${OVERSEAS_CXM4}CXM4\n`
+}
+if (OVERSEAS_CXOPS != 0) {
+    msg1 += `${OVERSEAS_CXOPS}CXOPS\n`
+}
+if (OVERSEAS_CXOTH != 0) {
+    msg1 += `${OVERSEAS_CXOTH}CXOTH\n`
+}
+if (OVERSEAS_CXWX != 0) {
+    msg1 += `${OVERSEAS_CXWX}CXWX\n`
 }
 }                                                                                                                                                        
     msg1 = msg1 + `
 
     
-    
-Monthly - ${MONTH}
+=============================           
+\`MONTHLY - ${MONTH}\`
     
 `                
     
@@ -348,7 +365,7 @@ Monthly - ${MONTH}
 <P> ${DAILY_LOCAL_P_TOTAL_SORTIES} / ${DAILY_LOCAL_P_TOTAL_HOURS.toFixed(1)}                             
 <A> ${DAILY_LOCAL_A_TOTAL_SORTIES} / ${DAILY_LOCAL_A_TOTAL_HOURS.toFixed(1)}                            
                                                                 
-${DAILY_LOCAL_NEG_TOTAL_SORTIES } / ${DAILY_LOCAL_NEG_TOTAL_HOURS.toFixed(1)}
+**${DAILY_LOCAL_NEG_TOTAL_SORTIES } / ${DAILY_LOCAL_NEG_TOTAL_HOURS.toFixed(1)}**
 
 `
     }
@@ -359,7 +376,7 @@ ${DAILY_LOCAL_NEG_TOTAL_SORTIES } / ${DAILY_LOCAL_NEG_TOTAL_HOURS.toFixed(1)}
 <P> ${DAILY_OVERSEAS_P_TOTAL_SORTIES} / ${DAILY_OVERSEAS_P_TOTAL_HOURS.toFixed(1)}                             
 <A> ${DAILY_OVERSEAS_A_TOTAL_SORTIES} / ${DAILY_OVERSEAS_A_TOTAL_HOURS.toFixed(1)}                            
                                                                 
-${DAILY_OVERSEAS_NEG_TOTAL_SORTIES } / ${DAILY_OVERSEAS_NEG_TOTAL_HOURS.toFixed(1)}
+**${DAILY_OVERSEAS_NEG_TOTAL_SORTIES } / ${DAILY_OVERSEAS_NEG_TOTAL_HOURS.toFixed(1)}**
             
 `
     }                                                         
@@ -394,7 +411,7 @@ ${DAILY_OVERSEAS_NEG_TOTAL_SORTIES } / ${DAILY_OVERSEAS_NEG_TOTAL_HOURS.toFixed(
     }                                                                                                
     msg1 += `
 
-${DAILY_NEG_TOTAL_SORTIES} / ${DAILY_NEG_TOTAL_HOURS.toFixed(1)}
+**${DAILY_NEG_TOTAL_SORTIES} / ${DAILY_NEG_TOTAL_HOURS.toFixed(1)}**
                                                                                     
 Achieved % for the month:                                                                                                                                            
                                                                                                                                     

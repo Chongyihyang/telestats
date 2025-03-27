@@ -87,7 +87,7 @@ function calculate_stats() {
     let YESTERDAY_ACCUMULATIVE_CXOTH = 0;
     let YESTERDAY_ACCUMULATIVE_CXWX =  0;       
 
-    if (MON == my_array[9]) {
+    if (MON == my_array[9].split("/")[1]) {
         YESTERDAY_LOCAL_ACCUMULATIVE_T_SORTIES = Number(my_array[0].split(",")[0]);
         YESTERDAY_LOCAL_ACCUMULATIVE_T_HOURS   = parseFloat(my_array[0].split(",")[1]);
         YESTERDAY_LOCAL_ACCUMULATIVE_P_SORTIES = Number(my_array[1].split(",")[0]);
@@ -429,7 +429,7 @@ ${DAILY_OVERSEAS_A_TOTAL_SORTIES},${DAILY_OVERSEAS_A_TOTAL_HOURS.toFixed(1)}
 ${TODAY_ACCUMULATIVE_CXM1},${TODAY_ACCUMULATIVE_CXM2},${TODAY_ACCUMULATIVE_CXM3},${TODAY_ACCUMULATIVE_CXM4},${TODAY_ACCUMULATIVE_CXOPS},${TODAY_ACCUMULATIVE_CXOTH},${TODAY_ACCUMULATIVE_CXWX}
 ${wk1.toFixed(1)},${wk2.toFixed(1)}
 ${MOP_T_LOCAL_SORTIES},${MOP_T_LOCAL_HOURS},${MOP_P_LOCAL_SORTIES},${MOP_P_LOCAL_HOURS},${MOP_T_OVERSEAS_SORTIES},${MOP_T_OVERSEAS_HOURS},${MOP_P_OVERSEAS_SORTIES},${MOP_P_OVERSEAS_HOURS}
-${MON}`;
+${DAY/MON}/ <- DATE OF PUBLISHED STAT`;
     document.getElementById("message").value = msg1;
     document.getElementById("stats").value = msg2;
 }

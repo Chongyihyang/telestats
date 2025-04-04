@@ -114,7 +114,7 @@ function calculate_stats() {
     let WORKYEAR_ACCUMULATIVE_SORTIES = Number(my_array[7].split(",")[0]);
     let WORKYEAR_ACCUMULATIVE_HOURS   = Number(my_array[7].split(",")[1]);
 
-    if (MON == 4 && Number(my_array[9]) == "3") {
+    if (MON == 4 && Number(my_array[9]) == 3) {
         WORKYEAR_ACCUMULATIVE_SORTIES = 0;
         WORKYEAR_ACCUMULATIVE_HOURS   = 0;
     }

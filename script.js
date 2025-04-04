@@ -86,8 +86,9 @@ function calculate_stats() {
     let YESTERDAY_ACCUMULATIVE_CXOPS = 0;
     let YESTERDAY_ACCUMULATIVE_CXOTH = 0;
     let YESTERDAY_ACCUMULATIVE_CXWX =  0;       
-
-    if (MON == my_array[9].split("/")[1]) {
+    let prev_mth = my_array[9].split("/")[1];
+	
+    if (MON == prev_mth) {
         YESTERDAY_LOCAL_ACCUMULATIVE_T_SORTIES = Number(my_array[0].split(",")[0]);
         YESTERDAY_LOCAL_ACCUMULATIVE_T_HOURS   = parseFloat(my_array[0].split(",")[1]);
         YESTERDAY_LOCAL_ACCUMULATIVE_P_SORTIES = Number(my_array[1].split(",")[0]);
@@ -113,8 +114,7 @@ function calculate_stats() {
 
     let WORKYEAR_ACCUMULATIVE_SORTIES = Number(my_array[7].split(",")[0]);
     let WORKYEAR_ACCUMULATIVE_HOURS   = Number(my_array[7].split(",")[1]);
-
-    if (MON == 4 && Number(my_array[9]) == 3) {
+    if (MON == 4 && prev_mth == 3) {
         WORKYEAR_ACCUMULATIVE_SORTIES = 0;
         WORKYEAR_ACCUMULATIVE_HOURS   = 0;
     }
